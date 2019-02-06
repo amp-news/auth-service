@@ -1,0 +1,90 @@
+buildscript {
+    ext {
+        springBootVersion = '2.0.1.RELEASE'
+    }
+    repositories {
+        mavenCentral()
+        maven { url "https://repo.spring.io/snapshot" }
+        maven { url "https://repo.spring.io/milestone" }
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'eclipse'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+
+group = 'com.amp'
+version = '0.0.1'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+    maven { url "https://repo.spring.io/snapshot" }
+    maven { url "https://repo.spring.io/milestone" }
+}
+
+ext {
+    springCloudVersion = 'Finchley.SR1'
+}
+
+def profiles = 'dev'
+def testReportsDir = 'test-reports'
+
+springBoot {
+    buildInfo()
+}
+
+test {
+    reports {
+        junitXml.enabled = true
+        junitXml.setDestination(file("$buildDir/$testReportsDir/xml"))
+
+        html.enabled = true
+        html.setDestination(file("$buildDir/$testReportsDir/html"))
+    }
+}
+
+bootJar {
+    launchScript()
+}
+
+bootRun {
+    args = ["--spring.profiles.active=" + profiles]
+}
+
+dependencies {
+    compile('org.springframework.cloud:spring-cloud-starter-netflix-eureka-client')
+    compile('org.springframework.boot:spring-boot-starter-web')
+    compile('org.springframework.boot:spring-boot-starter-actuator')
+    compile('org.springframework.boot:spring-boot-starter-data-redis')
+    compile('org.springframework.boot:spring-boot-starter-security')
+    compile('org.springframework.boot:spring-boot-starter-hateoas')
+    compile('org.springframework.cloud:spring-cloud-starter-netflix-hystrix')
+    compile('org.springframework.cloud:spring-cloud-starter-openfeign')
+    compile('org.springframework.security:spring-security-oauth2-client')
+    compile('org.springframework.security:spring-security-rsa')
+    compile('com.netflix.feign:feign-jackson:8.18.0')
+    compile('io.jsonwebtoken:jjwt:0.9.0')
+    compile('redis.clients:jedis:2.9.0')
+    compileOnly('org.projectlombok:lombok')
+    testCompile('org.springframework.boot:spring-boot-starter-test')
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+    }
+}
+
+idea {
+    module {
+        inheritOutputDirs = true
+    }
+}

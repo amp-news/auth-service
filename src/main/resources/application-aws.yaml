@@ -1,0 +1,22 @@
+server:
+  port: 8080
+
+eureka:
+ client:
+  serviceUrl:
+   defaultZone: ${EUREKA_URI:http://ip-172-31-1-174.eu-west-1.compute.internal:8761/eureka}
+  healthcheck:
+    enabled: true
+
+ instance:
+  lease-expiration-duration-in-seconds: 90
+  statusPageUrlPath: /actuator/info
+  healthCheckUrlPath: /actuator/health
+
+spring:
+ redis:
+   host: ip-172-31-6-35.eu-west-1.compute.internal
+   port: 6379
+   connection:
+     time-out-sec: 1
+     read-time-out-sec: 1

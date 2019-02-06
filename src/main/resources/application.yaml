@@ -1,0 +1,60 @@
+spring:
+  application:
+    name: auth-service
+
+security:
+  auth:
+    token:
+      issuer: ${spring.application.name}
+      keystorePath: /security/auth-token-keys.jks
+      keystorePassword: jmp-auth-service23M
+      keyPairAlias: auth-token-keys
+      maxAgeSeconds: 900
+      refreshAgeSeconds: 18000
+
+  oauth2:
+    client:
+      base-uri: /auth/external
+      registration:
+        google:
+          client-name: google
+          client-id: ${google.client.id}
+          client-secret: ${google.client.secret}
+          scope:
+            - email
+            - profile
+
+feign:
+  client:
+    config:
+      default:
+        connectTimeout: 5000
+        readTimeout: 5000
+        decode404: false
+
+ribbon:
+  ConnectTimeout: 10000
+  ReadTimeout: 10000
+
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 15000
+      circuitBreaker:
+       sleepWindowInMilliseconds: 5000
+      fallback:
+        enabled: false
+
+
+
+
+
+
+
+
+
+
+

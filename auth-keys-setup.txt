@@ -1,0 +1,23 @@
+// Generate keypair within java key store:
+keytool
+    -genkeypair
+    -alias auth-token-keys
+    -keyalg RSA
+    -keysize 2048
+    -keypass jmp-auth-service23M
+    -keystore auth-token-keys.jks
+    -storepass jmp-auth-service23M
+
+// Export public key from java key store:
+keytool -list -rfc --keystore auth-token-keys.jks | openssl x509 -inform pem -pubkey
+
+// Public key value:
+-----BEGIN PUBLIC KEY-----
+MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAtK3Z97OacCK4evm85ESB
+TkNSDXXjf0ZOLuZKtDvqAzOZBSqSlD9JOPqktZzQ18m3Ng54BbYFVZJidL5UxyHN
+GNDq4Y8qy0/nTwxCs7oxtNkMKHQeTTDEe7QWjTDmYJEgmfq2ctaO1qbh/nZF0g8u
+Wiwh2Es6z9mqxFg5LIdxBvWPK+D/DhNtEm/Juma0j9rf4PGA2+5b5CRN39rJv0Ql
+fbC/O0PowGeGbSHdUDAAAWiUBw3ReCDnZ9TnGlW+jy9XxmRnzntfCbNMKUXEWz7W
+KWOPaV4r5FUPILnYX/MBRevS2Qe4gcpnuLWbJwrhmTmHcW0fYoYdxlid3zvz7/Co
+uQIDAQAB
+-----END PUBLIC KEY-----
